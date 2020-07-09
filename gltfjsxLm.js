@@ -170,7 +170,7 @@ function parseExtras(extras) {
   } else return ''
 }
 
-module.exports = function (file, nameExt, output, exportOptions) {
+module.exports = function (file, nameExt, output, exportOptions, publicPath) {
   return new Promise((resolve, reject) => {
     Object.keys(exportOptions).forEach((key) => (options[key] = exportOptions[key]))
     const stream = fs.createWriteStream(output)
@@ -208,9 +208,9 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
   const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'}
   const { nodes, materials${options.animation ? ', animations' : ''} } = useLoader${
               options.types ? '<GLTFResult>' : ''
-            }(GLTFLoader, '3d/${nameExt}'${options.draco ? `, draco(${JSON.stringify(options.binary)})` : ``})${
-              options.animation ? printAnimations(gltf, options) : ``
-            }
+            }(GLTFLoader, '3d/${publicPath}${nameExt}'${
+              options.draco ? `, draco(${JSON.stringify(options.binary)})` : ``
+            })${options.animation ? printAnimations(gltf, options) : ``}
 
   useEffect(() => {
     const arrayData = values(materials);
