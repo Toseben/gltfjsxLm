@@ -199,12 +199,27 @@ import { useLoader${options.animation ? ', useFrame' : ''} } from 'react-three-f
 import { GLTFLoader${options.types ? ', GLTF' : ''} } from 'three/examples/jsm/loaders/GLTFLoader'${
               options.draco ? `\nimport { draco } from 'drei'` : ``
             }
+
+
+            useEffect(() => {
+              const arrayData = values(materials);
+          
+              var i;
+              for (i = 0; i < arrayData.length; i++) {
+                arrayData[i].lightMap = arrayData[i].aoMap;
+                arrayData[i].lightMapIntensity = 1;
+          
+                arrayData[i].aoMap = null;
+              }
+            }, []);
+
+
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
   const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'}
   const { nodes, materials${options.animation ? ', animations' : ''} } = useLoader${
               options.types ? '<GLTFResult>' : ''
-            }(GLTFLoader, '/${nameExt}'${options.draco ? `, draco(${JSON.stringify(options.binary)})` : ``})${
+            }(GLTFLoader, '3d/${nameExt}'${options.draco ? `, draco(${JSON.stringify(options.binary)})` : ``})${
               options.animation ? printAnimations(gltf, options) : ``
             }
   return (
