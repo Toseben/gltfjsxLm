@@ -16,13 +16,13 @@ const argv = require('yargs')
 
 if (argv._[0]) {
   let file = argv._[0]
-  let nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]
+  let nameExt = path + file.match(/[-_\w]+[.][\w]+$/i)[0]
   let name = nameExt.split('.').slice(0, -1).join('.')
   let output = argv._[1] || name.charAt(0).toUpperCase() + name.slice(1) + (argv.types ? '.tsx' : '.js')
 
   console.log(`gltfjsxlm ${version}, converting ${file} to ${output} nameExt ${nameExt}`)
   console.log('')
-  gltfjsxlm(file, nameExt, output, argv)
+  gltfjsxlm(file, nameExt, path, output, argv)
     .then(() => console.log('\ndone.'))
     .catch((err) => console.log('\nfailed.\n\n', err))
 } else {
