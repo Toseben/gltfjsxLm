@@ -19,11 +19,10 @@ if (argv._[0]) {
   let nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]
   let name = nameExt.split('.').slice(0, -1).join('.')
   let output = argv._[1] || name.charAt(0).toUpperCase() + name.slice(1) + (argv.types ? '.tsx' : '.js')
-  let publicPath = ''
 
   console.log(`gltfjsxlm ${version}, converting ${file} to ${output}`)
   console.log('')
-  gltfjsxlm(file, nameExt, output, argv, publicPath)
+  gltfjsxlm(file, nameExt, output, argv)
     .then(() => console.log('\ndone.'))
     .catch((err) => console.log('\nfailed.\n\n', err))
 } else {

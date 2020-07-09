@@ -170,7 +170,7 @@ function parseExtras(extras) {
   } else return ''
 }
 
-module.exports = function (file, nameExt, output, exportOptions, publicPath) {
+module.exports = function (file, nameExt, output, exportOptions) {
   return new Promise((resolve, reject) => {
     Object.keys(exportOptions).forEach((key) => (options[key] = exportOptions[key]))
     const stream = fs.createWriteStream(output)
