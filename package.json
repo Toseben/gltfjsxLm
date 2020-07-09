@@ -1,9 +1,9 @@
 {
-  "name": "gltfjsx",
+  "name": "gltfjsxlm",
   "version": "2.0.3",
   "description": "gltf to jsx",
   "bin": {
-    "gltfjsx": "./index.js"
+    "gltfjsxlm": "./index.js"
   },
   "husky": {
     "hooks": {
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/react-spring/gltfjsx.git"
+    "url": "git+https://github.com/PhoYo/gltfjsxLm.git"
   },
   "keywords": [
     "gltf",

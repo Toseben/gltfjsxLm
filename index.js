@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const version = require('./package.json').version
-const gltfjsx = require('./gltfjsx')
+const gltfjsxlm = require('./gltfjsxlm')
 const argv = require('yargs')
   .boolean('animation')
   .boolean('draco')
@@ -20,9 +20,9 @@ if (argv._[0]) {
   let name = nameExt.split('.').slice(0, -1).join('.')
   let output = argv._[1] || name.charAt(0).toUpperCase() + name.slice(1) + (argv.types ? '.tsx' : '.js')
 
-  console.log(`gltfjsx ${version}, converting ${file} to ${output}`)
+  console.log(`gltfjsxlm ${version}, converting ${file} to ${output}`)
   console.log('')
-  gltfjsx(file, nameExt, output, argv)
+  gltfjsxlm(file, nameExt, output, argv)
     .then(() => console.log('\ndone.'))
     .catch((err) => console.log('\nfailed.\n\n', err))
 } else {
