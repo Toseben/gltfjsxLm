@@ -11,7 +11,7 @@ const argv = require('yargs')
   .option('compress', { alias: 'c', default: true, describe: 'Removes names and empty groups', type: 'boolean' })
   .option('precision', { alias: 'p', default: 2, describe: 'Number of fractional digits', type: 'number' })
   .option('binary', { alias: 'b', describe: 'Draco path', default: '/draco-gltf/', type: 'string' })
-  .usage('npx gltfjsx model.gltf [Model.js] [options]')
+  .usage('npx gltfjsx model.gltf [Model.js] [options] [publicPath]')
   .help().argv
 
 if (argv._[0]) {
@@ -19,6 +19,7 @@ if (argv._[0]) {
   let nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]
   let name = nameExt.split('.').slice(0, -1).join('.')
   let output = argv._[1] || name.charAt(0).toUpperCase() + name.slice(1) + (argv.types ? '.tsx' : '.js')
+  let publicPath = ''
 
   console.log(`gltfjsxlm ${version}, converting ${file} to ${output}`)
   console.log('')
