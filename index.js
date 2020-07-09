@@ -17,7 +17,7 @@ const argv = require('yargs')
 if (argv._[0]) {
   let path = argv._[1]
   let file = argv._[0]
-  let nameExt = path + file.match(/[-_\w]+[.][\w]+$/i)[0]
+  let nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]
   let name = nameExt.split('.').slice(0, -1).join('.')
   let output = argv._[1] || name.charAt(0).toUpperCase() + name.slice(1) + (argv.types ? '.tsx' : '.js')
 
