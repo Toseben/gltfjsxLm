@@ -20,7 +20,7 @@ if (argv._[0]) {
   let name = nameExt.split('.').slice(0, -1).join('.')
   let output = argv._[1] || name.charAt(0).toUpperCase() + name.slice(1) + (argv.types ? '.tsx' : '.js')
 
-  console.log(`gltfjsxlm ${version}, converting ${file} to ${output}`)
+  console.log(`gltfjsxlm ${version}, converting ${file} to ${output} nameExt ${nameExt}`)
   console.log('')
   gltfjsxlm(file, nameExt, output, argv)
     .then(() => console.log('\ndone.'))
