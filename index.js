@@ -15,6 +15,7 @@ const argv = require('yargs')
   .help().argv
 
 if (argv._[0]) {
+  let path = argv[2]
   let file = argv._[0]
   let nameExt = path + file.match(/[-_\w]+[.][\w]+$/i)[0]
   let name = nameExt.split('.').slice(0, -1).join('.')
