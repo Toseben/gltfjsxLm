@@ -218,9 +218,12 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
     var i;
     for (i = 0; i < arrayData.length; i++) {
       arrayData[i].lightMap = arrayData[i].aoMap;
+      if (arrayData[i].lightMap)
+      arrayData[i].lightMap.encoding = THREE.sRGBEncoding;
       arrayData[i].lightMapIntensity = 1;
 
-      arrayData[i].aoMap = null;
+      arrayData[i].aoMapIntensity = 0;
+      arrayData[i].needsUpdate = true;
     }
   }, []);
 
