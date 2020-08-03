@@ -201,7 +201,7 @@ import { GLTFLoader${options.types ? ', GLTF' : ''} } from 'three/examples/jsm/l
             }
 
 import values from 'lodash/values';
-
+import useStore from '../zustandStore';
 
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
@@ -211,6 +211,9 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
             }(GLTFLoader, '${path}${nameExt}'${options.draco ? `, draco(${JSON.stringify(options.binary)})` : ``})${
               options.animation ? printAnimations(gltf, options) : ``
             }
+
+  const loaded = useStore((state) => state.loaded);
+  const setLoaded = useStore((state) => state.setLoaded);
 
   useEffect(() => {
     const arrayData = values(materials);
@@ -225,6 +228,8 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
       arrayData[i].aoMapIntensity = 0;
       arrayData[i].needsUpdate = true;
     }
+
+    setLoaded(loaded.assets, true);
   }, []);
 
 
