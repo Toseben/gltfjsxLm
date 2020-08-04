@@ -212,8 +212,7 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
               options.animation ? printAnimations(gltf, options) : ``
             }
 
-  const loaded = useStore((state) => state.loaded);
-  const setLoaded = useStore((state) => state.setLoaded);
+  const setModelReady = useStore((state) => state.setModelReady);
 
   useEffect(() => {
     const arrayData = values(materials);
@@ -229,7 +228,7 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
       arrayData[i].needsUpdate = true;
     }
 
-    setLoaded(loaded.assets, true);
+    setModelReady(true);
   }, []);
 
 
