@@ -86,6 +86,11 @@ function print(objects, gltf, obj, level = 0, parent) {
   // Form the object in JSX syntax
   result = `${space}<${type} `
 
+  if (obj.name.includes('_hotspot-')) {
+    const hotspotHighlight = obj.name.split('_hotspot-').pop()
+    result += `userData={{ hotspot: '${hotspotHighlight}' }}`
+  }
+
   const oldResult = result
 
   // Write out materials
@@ -202,6 +207,7 @@ import { GLTFLoader${options.types ? ', GLTF' : ''} } from 'three/examples/jsm/l
 
 import values from 'lodash/values';
 import useStore from '../zustandStore';
+import HighlightObject from '../hooks/highlightObject';
 
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
@@ -231,6 +237,7 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
     setModelReady(true);
   }, []);
 
+  HighlightObject(group);
 
   return (
     <group ref={group} {...props} dispose={null}>
