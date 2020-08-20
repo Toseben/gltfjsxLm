@@ -222,12 +222,21 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
 
   useEffect(() => {
     const arrayData = values(materials);
-
+    
     var i;
     for (i = 0; i < arrayData.length; i++) {
       arrayData[i].lightMap = arrayData[i].aoMap;
       if (arrayData[i].lightMap)
       arrayData[i].lightMap.encoding = THREE.sRGBEncoding;
+
+      if (arrayData[i].roughnessMap)
+      arrayData[i].roughnessMap.encoding = THREE.sRGBEncoding;
+
+      if (arrayData[i].normalMap)
+        arrayData[i].normalMap.encoding = THREE.sRGBEncoding;
+
+      if (arrayData[i].map) arrayData[i].map.encoding = THREE.sRGBEncoding;
+
       arrayData[i].lightMapIntensity = 1;
 
       arrayData[i].aoMapIntensity = 0;
