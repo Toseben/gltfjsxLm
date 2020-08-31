@@ -219,12 +219,21 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
             }
 
   const setModelReady = useStore((state) => state.setModelReady);
+  const lut = useLoader(THREE.TextureLoader, '/3d/lut/${file.split('/')[0]}.png');
 
   useEffect(() => {
     const arrayData = values(materials);
-    
+    if (lut) lut.minFilter = lut.magFilter = THREE.LinearFilter;
+
     var i;
     for (i = 0; i < arrayData.length; i++) {
+      if (lut && !arrayData[i].name.includes('_noLUT')) {
+        arrayData[i].defines.USE_LUT = true;
+        arrayData[i].onBeforeCompile = (shader) => {
+          shader.uniforms.lookup = { value: lut };
+        };
+      }
+
       arrayData[i].lightMap = arrayData[i].aoMap;
       if (arrayData[i].lightMap)
       arrayData[i].lightMap.encoding = THREE.sRGBEncoding;
