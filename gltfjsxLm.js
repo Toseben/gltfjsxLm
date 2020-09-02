@@ -227,6 +227,8 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
 
     var i;
     for (i = 0; i < arrayData.length; i++) {
+      arrayData[i].defines.USE_UV = '';
+
       if (lut && !arrayData[i].name.includes('_noLUT')) {
         arrayData[i].defines.USE_LUT = true;
         arrayData[i].onBeforeCompile = (shader) => {
@@ -234,7 +236,12 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
         };
       }
 
-      arrayData[i].lightMap = arrayData[i].aoMap;
+      arrayData[i].lightMap = arrayData[i].emissiveMap;
+      arrayData[i].emissiveIntensity = 0
+
+      if (arrayData[i].aoMap)
+        arrayData[i].aoMap.encoding = THREE.sRGBEncoding;
+
       if (arrayData[i].lightMap)
       arrayData[i].lightMap.encoding = THREE.sRGBEncoding;
 
@@ -248,7 +255,7 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
 
       arrayData[i].lightMapIntensity = 1;
 
-      arrayData[i].aoMapIntensity = 0;
+      arrayData[i].aoMapIntensity = 1;
       arrayData[i].needsUpdate = true;
     }
 
