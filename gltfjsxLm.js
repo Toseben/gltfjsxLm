@@ -237,7 +237,10 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
         };
       }
 
-      arrayData[i].lightMap = arrayData[i].emissiveMap;
+      if (arrayData[i]._lightMap === undefined) arrayData[i]._lightMap = null;
+      if (arrayData[i].emissiveMap) arrayData[i]._lightMap = arrayData[i].emissiveMap;
+
+      arrayData[i].lightMap = arrayData[i]._lightMap;
       arrayData[i].emissiveIntensity = arrayData[i].lightMap ? 0 : 1;
       arrayData[i].emissiveMap = null;
 
