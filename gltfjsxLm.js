@@ -237,7 +237,8 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
       }
 
       arrayData[i].lightMap = arrayData[i].emissiveMap;
-      arrayData[i].emissiveIntensity = 0
+      arrayData[i].emissiveIntensity = arrayData[i].lightMap ? 0 : 1;
+      arrayData[i].emissiveMap = null;
 
       if (arrayData[i].aoMap)
         arrayData[i].aoMap.encoding = THREE.sRGBEncoding;
