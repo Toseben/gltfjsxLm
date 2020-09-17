@@ -209,6 +209,7 @@ import { GLTFLoader${options.types ? ', GLTF' : ''} } from 'three/examples/jsm/l
 import values from 'lodash/values';
 import useStore from '../zustandStore';
 import HighlightObject from '../hooks/highlightObject';
+import useResourceTracker from '../hooks/resourceTracker';
 
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
@@ -221,6 +222,8 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
 
   const setModelReady = useStore((state) => state.setModelReady);
   const lut = useLoader(THREE.TextureLoader, '/3d/lut/${lutName}.png');
+
+  const resourceHook = useResourceTracker();
 
   useEffect(() => {
     const arrayData = values(materials);
@@ -265,6 +268,10 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
     }
 
     setModelReady(true);
+
+    resourceHook.track(group.current);
+    
+    return () => resourceHook.dispose(); 
   }, []);
 
   HighlightObject(group);
