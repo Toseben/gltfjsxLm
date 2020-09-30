@@ -202,7 +202,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
 import * as THREE from 'three'
 import React, { useRef${options.animation ? ', useState, useEffect' : ', useState, useEffect'} } from 'react'
 import { useLoader${options.animation ? ', useFrame' : ''} } from 'react-three-fiber'
-import { GLTFLoader${options.types ? ', GLTF' : ''} } from 'three/examples/jsm/loaders/GLTFLoader'${
+import { GLTFLoader${options.types ? ', GLTF' : ''} } from '../lib/GLTFLoader'${
               options.draco ? `\nimport { draco } from 'drei'` : ``
             }
 
