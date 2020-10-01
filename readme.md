@@ -2,10 +2,12 @@
 
 GLTFJSXLM edit of GLTFJSX. Lightmap should be on the emissive node which means you cannot use the emssive as you would expect to use it (for emissive), more details below.
 
-Tags to use in the engine :
+Tags and other details required for GLTF export :
 
 _lamps - Make an empty object with this tag added to the name to add a sprite lamp (soft circle of light) in the current location, scale of the empty determines the sprite size
+
 _candles - Make an empty with this tag as name, candle flames are added at this location
+
 _noLUT - Add this tag to an object so it is not affected by the LUT, good for brand colours and screens
 
 emissive - if you do not add a lightmap on the emissive node, the object will be emissive in the engine 
