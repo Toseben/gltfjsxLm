@@ -92,9 +92,10 @@ function print(objects, gltf, obj, level = 0, parent) {
   }
 
   const oldResult = result
+  const isBooth = obj.name.includes('_booth-')
 
   // Write out materials
-  if (obj.material) {
+  if (obj.material && !isBooth) {
     if (obj.material.name) result += `material={materials${sanitizeName(obj.material.name)}} `
     else result += `material={${node}.material} `
   }
@@ -120,6 +121,12 @@ function print(objects, gltf, obj, level = 0, parent) {
   ) {
     obj.__removed = true
     return children
+  }
+
+  // Convert to booth
+  if (isBooth) {
+    result = result.replace('<mesh', '<Discoverable')
+    result += `type={'booth'} `
   }
 
   // Close tag
@@ -210,6 +217,7 @@ import values from 'lodash/values';
 import useStore from '../zustandStore';
 import HighlightObject from '../hooks/highlightObject';
 import useResourceTracker from '../hooks/resourceTracker';
+import Discoverable from '../Discoverable';
 
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
