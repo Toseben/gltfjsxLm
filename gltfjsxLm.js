@@ -64,6 +64,15 @@ type GLTFActions = Record<ActionName, THREE.AnimationAction>;\n`
 }\n${animationTypes}`
 }
 
+function printDiscoverable(node, obj, type) {
+  return `<Discoverable
+      ${`geometry={${node}.geometry} `}
+      ${`name="${obj.name}" `}
+      ${`type="${type}" `}
+    />
+  `
+}
+
 function print(objects, gltf, obj, level = 0, parent) {
   let result = ''
   let space = new Array(level).fill(' ').join('')
@@ -92,10 +101,9 @@ function print(objects, gltf, obj, level = 0, parent) {
   }
 
   const oldResult = result
-  const isBooth = obj.name.includes('_booth-')
 
   // Write out materials
-  if (obj.material && !isBooth) {
+  if (obj.material) {
     if (obj.material.name) result += `material={materials${sanitizeName(obj.material.name)}} `
     else result += `material={${node}.material} `
   }
@@ -123,17 +131,25 @@ function print(objects, gltf, obj, level = 0, parent) {
     return children
   }
 
-  // Convert to booth
-  if (isBooth) {
-    result = result.replace('<mesh', '<Discoverable')
-    result += `type={'booth'} `
-  }
-
   // Close tag
   result += `${children.length ? '>' : '/>'}\n`
 
   // Add children and return
   if (children.length) result += children + `${space}</${type}>${!parent ? '' : '\n'}`
+
+  // Convert to discoverable
+  const isBooth = obj.name.includes('_booth-')
+  const isDiscoverable = obj.name.includes('_discoverable-')
+
+  if (isBooth) {
+    result = printDiscoverable(node, obj, 'booth')
+    return result
+  }
+
+  if (isDiscoverable) {
+    result += printDiscoverable(node, obj, 'discoverable')
+  }
+
   return result
 }
 
