@@ -64,6 +64,15 @@ type GLTFActions = Record<ActionName, THREE.AnimationAction>;\n`
 }\n${animationTypes}`
 }
 
+function printDiscoverable(node, obj, type) {
+  return `<Discoverable
+      ${`geometry={${node}.geometry} `}
+      ${`name="${obj.name}" `}
+      ${`type="${type}" `}
+    />
+  `
+}
+
 function print(objects, gltf, obj, level = 0, parent) {
   let result = ''
   let space = new Array(level).fill(' ').join('')
@@ -127,6 +136,20 @@ function print(objects, gltf, obj, level = 0, parent) {
 
   // Add children and return
   if (children.length) result += children + `${space}</${type}>${!parent ? '' : '\n'}`
+
+  // Convert to discoverable
+  const isBooth = obj.name.includes('_booth-')
+  const isDiscoverable = obj.name.includes('_discoverable-')
+
+  if (isBooth) {
+    result = printDiscoverable(node, obj, 'booth')
+    return result
+  }
+
+  if (isDiscoverable) {
+    result += printDiscoverable(node, obj, 'discoverable')
+  }
+
   return result
 }
 
@@ -210,6 +233,7 @@ import values from 'lodash/values';
 import useStore from '../zustandStore';
 import HighlightObject from '../hooks/highlightObject';
 import useResourceTracker from '../hooks/resourceTracker';
+import Discoverable from '../Discoverable';
 
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
