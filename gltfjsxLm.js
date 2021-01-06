@@ -64,10 +64,10 @@ type GLTFActions = Record<ActionName, THREE.AnimationAction>;\n`
 }\n${animationTypes}`
 }
 
-function printDiscoverable(node, obj, type) {
+function printDiscoverable(node, name, type) {
   return `<Discoverable
       ${`geometry={${node}.geometry} `}
-      ${`name="${obj.name}" `}
+      ${`name="${name}" `}
       ${`type="${type}" `}
     />
   `
@@ -94,12 +94,6 @@ function print(objects, gltf, obj, level = 0, parent) {
 
   // Form the object in JSX syntax
   result = `${space}<${type} `
-
-  if (obj.name.includes('_hotspot-')) {
-    const hotspotHighlight = obj.name.split('_hotspot-').pop()
-    result += `userData={{ hotspot: '${hotspotHighlight}' }}`
-  }
-
   const oldResult = result
 
   // Write out materials
@@ -121,6 +115,14 @@ function print(objects, gltf, obj, level = 0, parent) {
   if (obj.scale instanceof THREE.Vector3 && obj.scale.x !== 1 && obj.scale.y !== 1 && obj.scale.z !== 1)
     result += `scale={[${rNbr(obj.scale.x)}, ${rNbr(obj.scale.y)}, ${rNbr(obj.scale.z)},]} `
 
+  // Check for custom properties
+  const customProperties = Object.keys(obj.userData).filter((value) => ['candle', 'lamp'].includes(value))
+  if (customProperties.length) {
+    result += `userData={{ `
+    customProperties.forEach((prop) => (result += `${prop}: true `))
+    result += `}}`
+  }
+
   // Remove empty groups
   if (
     options.compress &&
@@ -138,16 +140,16 @@ function print(objects, gltf, obj, level = 0, parent) {
   if (children.length) result += children + `${space}</${type}>${!parent ? '' : '\n'}`
 
   // Convert to discoverable
-  const isBooth = obj.name.includes('_booth-')
-  const isDiscoverable = obj.name.includes('_discoverable-')
+  const isBooth = Object.keys(obj.userData).find((value) => /booth-/.test(value))
+  const isDiscoverable = Object.keys(obj.userData).find((value) => /discoverable-/.test(value))
 
   if (isBooth) {
-    result = printDiscoverable(node, obj, 'booth')
+    result = printDiscoverable(node, isBooth, 'booth')
     return result
   }
 
   if (isDiscoverable) {
-    result += printDiscoverable(node, obj, 'discoverable')
+    result += printDiscoverable(node, isDiscoverable, 'discoverable')
   }
 
   return result
@@ -257,7 +259,8 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
     for (i = 0; i < arrayData.length; i++) {
       arrayData[i].defines.USE_UV = '';
 
-      if (lut && !arrayData[i].name.includes('_noLUT')) {
+      const noLUT = Object.keys(arrayData[i].userData).find(value => /noLUT/.test(value));
+      if (lut && !noLUT) {
         arrayData[i].defines.USE_LUT = true;
         arrayData[i].onBeforeCompile = (shader) => {
           shader.uniforms.lookup = { value: lut };
