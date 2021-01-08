@@ -152,6 +152,11 @@ function print(objects, gltf, obj, level = 0, parent) {
     result += printDiscoverable(node, isDiscoverable, 'discoverable')
   }
 
+  // Sunlight
+  if (obj.name === 'Sun') {
+    result = `<SunLight position={[${obj.position.toArray()}]} rotation={[${obj.rotation.toArray().slice(0, 3)}]} /> \n`
+  }
+
   return result
 }
 
@@ -236,6 +241,7 @@ import useStore from '../zustandStore';
 import HighlightObject from '../hooks/highlightObject';
 import useResourceTracker from '../hooks/resourceTracker';
 import Discoverable from '../Discoverable';
+import SunLight from '../SunLight';
 
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
